@@ -4,20 +4,14 @@ const FONT = 'ui-sans-serif, "Segoe UI", sans-serif, "ZCOOL KuaiLe", "PingFang S
 
 export function drawFrame(ctx, state, time) {
   const { width, height } = WORLD;
-  const mag = state.reduceMotion ? 0 : state.shake;
-  const ox = mag ? (Math.random() - 0.5) * mag : 0;
-  const oy = mag ? (Math.random() - 0.5) * mag : 0;
 
   ctx.clearRect(0, 0, width, height);
-  ctx.save();
-  ctx.translate(ox, oy);
   drawJar(ctx, state);
   drawGuide(ctx, state);
   drawBalls(ctx, state, time);
   drawGlass(ctx, state);
   drawHeld(ctx, state, time);
   drawBits(ctx, state);
-  ctx.restore();
 }
 
 export function drawBall(ctx, x, y, r, tier, time, spin = 0, pop = 0, seed = 0) {
