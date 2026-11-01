@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "python3 -m http.server 8765",
+    "start": "node serve.mjs",
     "test": "node --test"
   }
 }
