@@ -76,13 +76,11 @@ const state = {
   biggest: -1,
   overflow: 0,
   overflowLimit: OVERFLOW_LIMIT,
-  shake: 0,
   slow: 0,
   drops: 0,
   demo: 0.4,
   rank: rankProgress(0).index,
   mute: localStorage.getItem(MUTE_KEY) === "1",
-  reduceMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   metrics: jar,
   held: null,
 };
@@ -90,6 +88,7 @@ const state = {
 const hud = { score: -1, best: -1, strongest: "", rank: "", next: "" };
 let last = performance.now();
 let acc = 0;
+let fitted = "";
 
 sfx.setMuted(state.mute);
 paintMute();
@@ -268,7 +267,6 @@ function onMerges(events) {
       ? `${TIERS[event.tier].short} +${formatScore(gained)}`
       : `+${formatScore(gained)}`;
     float(label, event.x + (event.tier % 2 === 0 ? -14 : 14), event.y - 30, TIERS[event.tier].color);
-    state.shake = Math.min(16, state.shake + (event.tier >= 8 ? 9 : 2 + event.tier * 0.35));
     if (event.tier >= TIERS.length - 1) {
       state.slow = Math.max(state.slow, 1.35);
       sfx.jackpot();
@@ -334,7 +332,6 @@ function startGame() {
   state.merges = 0;
   state.biggest = -1;
   state.overflow = 0;
-  state.shake = 0;
   state.slow = 0;
   state.drops = 0;
   state.cooldown = 0;
@@ -392,7 +389,6 @@ function seedDemo() {
 }
 
 function updateJuice(dt) {
-  state.shake = Math.max(0, state.shake - dt * 20);
   state.comboTimer = Math.max(0, state.comboTimer - dt);
   if (state.comboTimer === 0) state.combo = 0;
   for (const bit of state.particles) {
@@ -471,8 +467,8 @@ function updateHud(force) {
     rankFillEl.style.width = `${Math.round(progress.p * 100)}%`;
   }
   const comboOn = state.mode === "play" && state.combo >= 2;
-  comboEl.hidden = !comboOn;
-  if (comboOn) comboEl.textContent = `涌现 ×${state.combo}`;
+  comboEl.classList.toggle("is-on", comboOn);
+  comboEl.textContent = comboOn ? `涌现 ×${state.combo}` : "";
   const upcoming = state.mode === "play" ? state.queue[0] : 0;
   const upcomingName = state.mode === "play" ? TIERS[upcoming].name : state.mode === "title" ? "演示中" : "结束";
   if (force || hud.next !== `${state.mode}:${upcomingName}:${state.queue.join(",")}`) {
@@ -506,12 +502,39 @@ function fit() {
   const cssW = Math.max(1, Math.floor(WORLD.width * scale));
   const cssH = Math.max(1, Math.floor(WORLD.height * scale));
   const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const key = `${cssW}x${cssH}x${dpr}`;
+  if (key === fitted) return;
+  fitted = key;
   canvas.style.width = `${cssW}px`;
   canvas.style.height = `${cssH}px`;
   canvas.width = Math.round(cssW * dpr);
   canvas.height = Math.round(cssH * dpr);
   ctx.setTransform((cssW * dpr) / WORLD.width, 0, 0, (cssH * dpr) / WORLD.height, 0, 0);
 }
+
+let viewportH = 0;
+let viewportW = 0;
+
+function syncViewport(force) {
+  const vv = window.visualViewport;
+  const nextH = Math.round(vv?.height || window.innerHeight);
+  const nextW = Math.round(vv?.width || window.innerWidth);
+  const widthChanged = viewportW && Math.abs(nextW - viewportW) >= 2;
+  const heightDelta = viewportH ? Math.abs(nextH - viewportH) : Infinity;
+  // Phone browser chrome shows and hides by well under 160px and does not
+  // change the width. Follow real window resizes; ignore that chrome jitter.
+  if (!force && viewportH && !widthChanged && heightDelta < 160) return;
+  if (nextH === viewportH && nextW === viewportW) return;
+  viewportH = nextH;
+  viewportW = nextW;
+  document.documentElement.style.setProperty("--app-h", `${nextH}px`);
+  requestAnimationFrame(fit);
+}
+
+syncViewport(true);
+window.addEventListener("resize", () => syncViewport(false));
+window.visualViewport?.addEventListener("resize", () => syncViewport(false));
+window.addEventListener("orientationchange", () => syncViewport(true));
 
 function aimFromEvent(event) {
   const rect = canvas.getBoundingClientRect();

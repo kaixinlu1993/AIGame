@@ -40,7 +40,9 @@ body {
 button, input { font-family: inherit; }
 
 .app {
-  height: 100dvh;
+  height: var(--app-h, 100dvh);
+  max-height: var(--app-h, 100dvh);
+  overflow: hidden;
   max-width: 560px;
   margin: 0 auto;
   padding:
@@ -104,11 +106,14 @@ button, input { font-family: inherit; }
 }
 
 .combo {
+  height: 18px;
+  line-height: 18px;
   color: var(--amber);
   font-size: 15px;
+  visibility: hidden;
 }
 
-.combo[hidden] { display: none !important; }
+.combo.is-on { visibility: visible; }
 
 .icon {
   position: absolute;
@@ -137,9 +142,18 @@ button, input { font-family: inherit; }
   display: flex;
   justify-content: space-between;
   gap: 8px;
+  height: 18px;
   font-size: 13px;
   color: var(--muted);
+  white-space: nowrap;
 }
+
+.rank-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#rank-next { min-width: 0; }
 
 #rank-name { color: var(--amber); }
 
@@ -163,7 +177,7 @@ button, input { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 8px;
-  min-height: 64px;
+  height: 64px;
 }
 
 #preview {
@@ -210,8 +224,10 @@ button, input { font-family: inherit; }
   position: relative;
   flex: 1;
   min-height: 0;
+  min-width: 0;
   display: grid;
   place-items: center;
+  overflow: hidden;
   touch-action: none;
 }
 
@@ -372,9 +388,6 @@ h2 {
 }
 
 @media (max-height: 760px) {
-  .logo { font-size: 22px; }
-  .score { font-size: 28px; }
-  .say { display: none; }
   .card { padding: 12px; }
   h2 { font-size: 24px; margin-bottom: 4px; }
   .deck { font-size: 14px; }
