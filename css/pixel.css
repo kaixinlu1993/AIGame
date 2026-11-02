@@ -1,0 +1,131 @@
+body {
+  background:
+    radial-gradient(800px 420px at 50% 0%, rgba(90, 60, 140, 0.28), transparent 60%),
+    #1b1224;
+}
+
+.pixel-app {
+  height: 100dvh;
+  max-height: 100dvh;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding:
+    max(8px, env(safe-area-inset-top))
+    12px
+    max(8px, env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+.pixel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.pixel-top h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+
+#view {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #241833;
+  border-radius: 12px;
+  display: block;
+  touch-action: none;
+}
+
+.pixel-card {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 18px;
+  padding: 14px 14px 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.pixel-card[hidden] { display: none !important; }
+
+.pixel-card h2 {
+  margin: 2px 0 8px;
+  font-size: 26px;
+  line-height: 1.15;
+}
+
+.pixel-card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.pixel-go {
+  appearance: none;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--coral);
+  color: #fff8f3;
+  font-size: 20px;
+  padding: 8px 18px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--coral-deep);
+}
+
+.pixel-go:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--coral-deep);
+}
+
+.pixel-note {
+  margin: 0;
+  min-height: 1.4em;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.pad {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.3fr;
+  gap: 8px;
+  flex: none;
+  touch-action: none;
+}
+
+.pad button {
+  appearance: none;
+  height: 58px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--paper);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.pad button:active { background: rgba(255, 177, 90, 0.28); }
+
+@media (max-height: 700px) {
+  .pixel-top h1 { font-size: 22px; }
+  .pad button { height: 48px; }
+}
