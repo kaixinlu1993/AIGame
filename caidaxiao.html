@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#1b1511">
+  <meta name="description" content="三个数字相加，押大、小、单、双或豹子。10 分钟开一次奖。">
+  <title>猜大小</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23e85d4c'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='28' fill='white'%3E♥%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/ZCOOLKuaiLe-subset.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/hall.css">
+</head>
+<body>
+  <div class="app guess">
+    <a class="hall-link" href="./">← 游戏厅</a>
+    <header class="top">
+      <div>
+        <p class="eyebrow">10 分钟开一次</p>
+        <h1>猜大小</h1>
+      </div>
+      <p class="balance">余额 <strong id="coins">10</strong> 币</p>
+    </header>
+
+    <section class="count" aria-live="off">
+      <p class="k">距离开奖</p>
+      <p class="clock" id="clock">10:00</p>
+    </section>
+
+    <section class="stage" id="stage">
+      <p class="k" id="stage-label">等待开奖</p>
+      <div class="dice" id="dice" aria-hidden="true">
+        <span>?</span>
+        <span>?</span>
+        <span>?</span>
+      </div>
+      <p class="sum" id="sum">三个 1 到 6 的数字，加起来再看结果</p>
+    </section>
+
+    <p class="banner" id="banner">选一边，送出一个爱心。</p>
+    <p id="live" class="sr-only" aria-live="polite"></p>
+
+    <div class="bets" id="bets">
+      <button type="button" data-side="da">
+        <span class="bet-name">大</span>
+        <span class="bet-odds">1 : 2</span>
+        <span class="bet-stake" data-stake="da">送爱心</span>
+      </button>
+      <button type="button" data-side="xiao">
+        <span class="bet-name">小</span>
+        <span class="bet-odds">1 : 2</span>
+        <span class="bet-stake" data-stake="xiao">送爱心</span>
+      </button>
+      <button type="button" data-side="dan">
+        <span class="bet-name">单</span>
+        <span class="bet-odds">1 : 2</span>
+        <span class="bet-stake" data-stake="dan">送爱心</span>
+      </button>
+      <button type="button" data-side="shuang">
+        <span class="bet-name">双</span>
+        <span class="bet-odds">1 : 2</span>
+        <span class="bet-stake" data-stake="shuang">送爱心</span>
+      </button>
+      <button type="button" class="wide" data-side="baozi">
+        <span class="bet-name">豹子</span>
+        <span class="bet-odds">1 : 10</span>
+        <span class="bet-stake" data-stake="baozi">送爱心</span>
+      </button>
+    </div>
+    <button id="refill" class="refill" type="button" hidden>币用完了，再领 10 个</button>
+
+    <section class="log">
+      <p class="rules">大是和从 11 起，小是和到 10 止。单看奇数，双看偶数。三个相同才是豹子。一次开奖可以又大又单。送 1 个爱心押 1 币，猜中拿回 2 倍，豹子拿回 10 倍，都含本金。进来先送 10 个币，只存在这只浏览器里。</p>
+      <h2>开奖记录</h2>
+      <ul id="history"></ul>
+    </section>
+  </div>
+  <noscript>这个小游戏需要 JavaScript。</noscript>
+  <script type="module" src="js/guess.js"></script>
+</body>
+</html>
