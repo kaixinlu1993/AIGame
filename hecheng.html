@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#1b1511">
+  <meta name="description" content="把两个一样傻的模型撞在一起，合成一个更自信、更会胡说的。别让它们挤出上下文。">
+  <title>合成大模型</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23f6e39a'/%3E%3Ccircle cx='23' cy='28' r='4'/%3E%3Ccircle cx='41' cy='28' r='4'/%3E%3Cpath d='M20 40c4 6 20 6 24 0' fill='none' stroke='%23241c14' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/ZCOOLKuaiLe-subset.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/game.css">
+  <style>body { margin: 0; background: #1b1511; }</style>
+</head>
+<body>
+  <div class="app">
+    <a class="hall-link" href="./">← 游戏厅</a>
+    <header class="hud">
+      <div class="brand">
+        <h1 class="logo">合成大模型</h1>
+        <p class="strongest">最强 · <span id="strongest">还没有</span></p>
+      </div>
+      <div class="scorebox">
+        <div class="score" id="score">0</div>
+        <p class="best">最高 <span id="best">—</span></p>
+        <p class="combo" id="combo"></p>
+      </div>
+      <button id="mute" class="icon" type="button" aria-pressed="false" aria-label="关闭声音">声</button>
+      <div class="rank">
+        <div class="rank-row">
+          <span id="rank-name">地下室服务器</span>
+          <span id="rank-next">距「会说人话了」还差 200</span>
+        </div>
+        <div class="rank-track"><div id="rank-fill"></div></div>
+      </div>
+      <div class="next">
+        <canvas id="preview" width="76" height="76" aria-hidden="true"></canvas>
+        <div class="next-copy">
+          <p class="k">下一块</p>
+          <p id="next-name">演示中</p>
+          <p id="next-say" class="say">两个一样的，合成一个更会吹的</p>
+        </div>
+        <span id="after" class="mini" aria-hidden="true">嵌入</span>
+      </div>
+    </header>
+
+    <div class="board">
+      <canvas id="game" width="400" height="620" aria-label="合成大模型游戏区"></canvas>
+      <div id="overlay" class="overlay" hidden>
+        <section id="over-card" class="card" hidden>
+          <div class="seal" id="seal" hidden>新高</div>
+          <p class="eyebrow">上下文满了</p>
+          <h2>它开始瞎写成绩单</h2>
+          <p class="boast" id="boast"></p>
+          <dl class="stats">
+            <div><dt>得分</dt><dd id="final-score">0</dd></div>
+            <div><dt>最强</dt><dd id="final-tier">分词器</dd></div>
+            <div><dt>合成</dt><dd id="final-merges">0</dd></div>
+            <div><dt>最高涌现</dt><dd id="final-combo">×1</dd></div>
+          </dl>
+          <button id="again" class="primary" type="button">再训一次</button>
+          <p class="hint" id="best-note"></p>
+        </section>
+      </div>
+    </div>
+    <section id="title-card" class="card">
+      <p class="eyebrow">又傻又能上头</p>
+      <h2>把一样的撞在一起</h2>
+      <p class="deck">两个一样的模型撞在一起，就会变成一个更大、更自信、更不讲理的。堆出上下文窗口，这局就完了。</p>
+      <div class="recipe" aria-hidden="true">
+        <span class="dot a"></span>
+        <span class="op">+</span>
+        <span class="dot a"></span>
+        <span class="op">→</span>
+        <span class="dot b"></span>
+      </div>
+      <button id="start" class="primary" type="button">开始训练</button>
+      <p class="hint" id="title-best">还没有最高分</p>
+    </section>
+  </div>
+  <p id="live" class="sr-only" aria-live="polite"></p>
+  <noscript>这个小游戏需要 JavaScript。</noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
